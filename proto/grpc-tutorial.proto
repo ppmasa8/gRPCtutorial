@@ -1,0 +1,52 @@
+syntax = "proto3";
+package tutorial;
+
+option go_package = "pb/";
+
+import "google/protobuf/timestamp.proto";
+
+service RockScissorsPaperService {
+    rpc PlayGame (PlayRequest) returns (PlayResponse) {}
+    rpc ReportMatchResults (ReportRequest) returns (ReportResponse) {}
+}
+
+enum HandShapes {
+    UNKNOWN  = 0;
+    ROCK     = 1;
+    SCISSORS = 2;
+    PAPER    = 3;
+}
+
+enum Result {
+    RESULT_UNKNOWN = 0;
+    WIN            = 1;
+    LOSE           = 2;
+    DRAW           = 3;
+}
+
+message MatchResult {
+    HandShapes yourHandShapes             = 1;
+    HandShapes opponentHandShapes         = 2;
+    Result result                         = 3;
+    google.protobuf.Timestamp create_time = 4;
+}
+
+message Report {
+    int32 numberOfGames = 1;
+    int32 numberOfWins  = 2;
+    repeated MatchResult matchResults = 3;
+}
+
+message PlayRequest {
+    HandShapes HandShapes = 1;
+}
+
+message PlayResponse {
+    MatchResult matchResult = 1;
+}
+
+message ReportRequest {}
+
+message ReportResponse {
+    Report report = 1;
+}
